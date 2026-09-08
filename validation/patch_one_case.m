@@ -1,5 +1,6 @@
+P_ROOT = fileparts(fileparts(mfilename('fullpath'))); addpath(genpath(fullfile(P_ROOT,'lib'))); cd(P_ROOT);  % repo root + lib on path
 % Load
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 clear functions
 
 % Constants
@@ -60,7 +61,7 @@ Cd_bar=sum(Cd_bins.*pdf_SAM)*d_theta_deg;
 Cd_bar_3D(alt_i,ac,si)=Cd_bar;
 fprintf('Patched: 450km | 0p50 | 60deg | Cd_bar=%.4f\n',Cd_bar);
 
-save('drag_sail_attitude_results.mat','Cd_bar_3D','ref_results',...
+save('sam_results.mat','Cd_bar_3D','ref_results',...
      'alt_vec','accom_vec','accom_vals','phi_vec','inertiaDB','ref_geom');
 fprintf('Saved\n');
 

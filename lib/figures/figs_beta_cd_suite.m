@@ -1,4 +1,4 @@
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 B_3D = 1 ./ Cd_bar_3D;
 

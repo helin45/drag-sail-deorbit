@@ -1,3 +1,4 @@
+P_ROOT = fileparts(fileparts(mfilename('fullpath'))); addpath(genpath(fullfile(P_ROOT,'lib'))); cd(P_ROOT);  % repo root + lib on path
 %% =========================================================================
 %  MONTE CARLO SENSITIVITY ANALYSIS
 %  Parameters: theta0, dphi0, rho_scale
@@ -6,7 +7,7 @@
 % =========================================================================
 clear; clc; close all; clear functions
 
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 load('inertia_tensors.mat','inertiaDB');
 
 mu = 3.986004418e14; Re = 6.3781e6;

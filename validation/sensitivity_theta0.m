@@ -1,5 +1,5 @@
 %% test_theta0.m
-% working directory is set by the run_analyses dispatcher (repo root)
+cd(fileparts(fileparts(mfilename('fullpath'))));  % run from repo root (loads mc_workspace.mat)
 load('mc_workspace.mat');
 
 N_test = 50;

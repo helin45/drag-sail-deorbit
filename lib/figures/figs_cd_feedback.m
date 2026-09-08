@@ -1,4 +1,4 @@
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 adbsat_base = fullfile(project_root(), 'adbsat_processed');
 alt = 450; accom = '0p75';

@@ -1,4 +1,4 @@
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 adbsat_base = fullfile(project_root(), 'adbsat_processed');
 accom_vec   = {'0p50','0p55','0p60','0p65','0p70','0p75','0p80','0p85','0p90','0p95','1p00'};

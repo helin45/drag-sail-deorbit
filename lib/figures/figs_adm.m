@@ -1,4 +1,4 @@
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 adbsat_base = fullfile(project_root(), 'adbsat_processed');
 clrs        = turbo(length(phi_vec));
 clrs_accom  = parula(length(accom_vals));

@@ -1,5 +1,5 @@
 load('decay_times.mat')
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 alt_labels = {'350 km','450 km','650 km'};
 T_caps     = [2, 10, 220];

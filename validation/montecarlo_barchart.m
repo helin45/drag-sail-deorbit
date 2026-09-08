@@ -1,5 +1,5 @@
+P_ROOT = fileparts(fileparts(mfilename('fullpath'))); addpath(genpath(fullfile(P_ROOT,'lib'))); cd(P_ROOT);  % repo root + lib on path
 %% mc_barchart.m
-% working directory is set by the run_analyses dispatcher (repo root)
 load('mc_workspace.mat');
 
 t_vec = linspace(0,T_orb,3000)';

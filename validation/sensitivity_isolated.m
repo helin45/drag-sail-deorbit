@@ -1,5 +1,5 @@
 
-% working directory is set by the run_analyses dispatcher (repo root)
+cd(fileparts(fileparts(mfilename('fullpath'))));  % run from repo root (loads mc_workspace.mat)
 load('mc_workspace.mat');
 t_vec = linspace(0,T_orb,3000)';
 opts  = odeset('RelTol',ode_reltol,'AbsTol',ode_abstol);

@@ -1,10 +1,10 @@
 function make_figures(name)
 %% =========================================================================
-%  make_figures.m  --  MAIN ENTRY POINT 4 of 4
+%  make_figures.m
 %
-%  Dispatcher for every figure-generation script. Each one loads a saved
-%  results .mat (from run_sweep or run_analyses) and writes .fig + .png
-%  into the repo root.
+%  Dispatcher for the figure-generation scripts in lib/figures/. Each one
+%  loads sam_results.mat (from SAM.m) and writes .fig + .png into the repo
+%  root.
 %
 %  Usage:
 %     make_figures                % list the available figure sets
@@ -12,6 +12,11 @@ function make_figures(name)
 %
 %  The working directory is switched to the repo root for the run and
 %  restored afterwards.
+%
+%  NOTE: the 'sam_sweep' and 'sam_extra' sets load attitude_SAM_sweep_FINAL.mat
+%  / longrun_SAM_sweep_FINAL.mat, which come from the 15-orbit runs
+%  (lib/variants/NEWMASTER.m and a long-run script not included here). They
+%  will error without those files.
 % =========================================================================
 
 here = fileparts(mfilename('fullpath'));
@@ -28,7 +33,6 @@ figs = {
     'cd_feedback'       'figs_cd_feedback'         'Cd vs pitch angle, raw ADBSat vs reflected/feedback treatment (former fefdbackplot.m)'
     'angular_velocity'  'figs_angular_velocity'    'Pitch-rate time histories, per geometry and zoomed (former angularvel.m)'
     'density_vs_time'   'figs_density_vs_time'     'Orbit-varying atmospheric density vs time (former newplothelin.m)'
-    'geometry_patch'    'fig_geometry_patch'       'Rendered sail geometry / patch view for one case (former patchsingle.m)'
 };
 
 if nargin == 0 || isempty(name) || any(strcmpi(name, {'list','help','-h','--help'}))

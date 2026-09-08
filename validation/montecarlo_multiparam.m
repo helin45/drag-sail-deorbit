@@ -1,3 +1,4 @@
+P_ROOT = fileparts(fileparts(mfilename('fullpath'))); addpath(genpath(fullfile(P_ROOT,'lib'))); cd(P_ROOT);  % repo root + lib on path
 %% =========================================================================
 %  MULTI-PARAMETER MONTE CARLO
 %  Samples: phi0, dphi0, rho_scale simultaneously

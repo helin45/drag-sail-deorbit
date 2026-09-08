@@ -1,4 +1,5 @@
-load('drag_sail_attitude_results.mat')
+P_ROOT = fileparts(fileparts(mfilename('fullpath'))); addpath(genpath(fullfile(P_ROOT,'lib'))); cd(P_ROOT);  % repo root + lib on path
+load('sam_results.mat')
 clear functions
 
 mu=3.986004418e14; Re=6.3781e6;

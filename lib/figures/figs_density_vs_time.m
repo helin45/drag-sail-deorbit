@@ -1,4 +1,4 @@
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 mu = 3.986004418e14; Re = 6.3781e6;
 year_ep=2025; month_ep=6; day_ep=21; hour_utc=10;

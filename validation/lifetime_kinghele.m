@@ -7,7 +7,7 @@ m   = 5.8;
 year_ep=2025; month_ep=6; day_ep=21; hour_utc=10;
 doy0 = day(datetime(year_ep,month_ep,day_ep),'dayofyear');
 
-load('drag_sail_attitude_results.mat')
+load('sam_results.mat')
 
 h_vec_km = 200:10:800;
 
