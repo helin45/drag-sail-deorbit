@@ -42,7 +42,7 @@ n_orb_sim = 1;
 load('ref_geometry.mat',   'ref_geom');
 load('inertia_tensors.mat','inertiaDB');
  
-adbsat_base = '/Users/helintaha/Library/CloudStorage/OneDrive-TheUniversityofManchester/Dissertation/MASTERCODE/adbsat_processed';
+adbsat_base = fullfile(fileparts(fileparts(fileparts(mfilename('fullpath')))), 'adbsat_processed');
  
 %% =========================================================================
 %  SECTION 3 — PARAMETER SPACE

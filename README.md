@@ -18,7 +18,7 @@ sweep of sail geometry, surface accommodation coefficient, and orbital altitude.
 ## Four entry points
 
 Everything is driven from four scripts in the repo root. Helper code lives in
-`lib/`; the original per-task scripts are kept verbatim in `archive/`.
+`lib/` — the original per-task script bodies, moved there almost verbatim.
 
 | Script | Purpose |
 |--------|---------|
@@ -88,8 +88,7 @@ lib/
   get_ref_geometry.m     Reads a .obj -> reference area / length
   analyses/*.m           One self-contained script per run_analyses option
   figures/*.m            One script per make_figures option
-
-archive/                 The original 30 scripts, unchanged
+  variants/*.m           Alternative sweep formulations (not wired to run_sweep)
 ```
 
 Generated output (`*.png`, `*.fig`) and large result `*.mat` files are
@@ -103,16 +102,23 @@ Regenerate figures with `make_figures`.
   its own copy of the attitude ODE / density-torque / SAM code, because the
   differences between them (density scaling, `wrapTo180` binning, `ode45` vs
   `ode113`, equatorial vs Sun-synchronous) are intentional.
-- Alternative sweep formulations are in `archive/`: `NEWMASTER.m` (January
+- Alternative sweep formulations are in `lib/variants/`: `NEWMASTER.m` (January
   epoch, equatorial, `ode113`, 15 orbits) and `mastergit.m`
-  (`run_drag_sail_sweep(config)` function form).
+  (`run_drag_sail_sweep(config)` function form). Run these directly; they are
+  not called by `run_sweep`. `mastergit.m` expects the working directory to be
+  the repo root.
 - `.fig` / `.png` figures and large `.mat` results are git-ignored; regenerate
   them locally.
 
-## Reference
+## References
 
-Sinpetru, L. A., et al. *ADBSat: methodology of a novel panel method tool for
-aerodynamic analysis of satellites.* Computer Physics Communications, 2022.
+- **ADBSat** — <https://github.com/nhcrisp/ADBSat>
+- Sinpetru, L. A., Crisp, N. H., et al. *ADBSat: methodology of a novel panel
+  method tool for aerodynamic analysis of satellites.* Computer Physics
+  Communications 275 (2022) 108326.
+- Sinpetru, L. A., Crisp, N. H., et al. *ADBSat: verification and validation of a
+  novel panel method for quick aerodynamic analysis of satellites.* Computer
+  Physics Communications 272 (2022) 108234.
 
 ## License
 

@@ -10,7 +10,7 @@
 %  Canonical settings (from the former MASTERCODE.m): June epoch, 98 deg
 %  Sun-synchronous inclination, ode45, zero initial pitch rate, one orbit.
 %  Edit SECTION 1 / SECTION 3 below to change epoch, solver, or the swept
-%  grid. Alternative sweep formulations are kept in archive/ (NEWMASTER.m,
+%  grid. Alternative sweep formulations are in lib/variants/ (NEWMASTER.m,
 %  mastergit.m).
 %
 %  Requires: adbsat_processed/ (ADBSat output, not in this repo -- see
