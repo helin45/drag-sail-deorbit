@@ -12,8 +12,44 @@ sweep of sail geometry, surface accommodation coefficient, and orbital altitude.
 | Stage | What it does | In this repo? |
 |-------|--------------|:---:|
 | **ADM** — Aerodynamic Database Model | Generates $C_D(\theta)$ and $C_M(\theta)$ over the full pitch range for each geometry / accommodation coefficient / altitude, using the CLL gas–surface interaction model in **ADBSat**. | **No** — see below |
-| **ROADM** — Reduced-Order Attitude Dynamics Model | Reads $C_M(\theta)$ from the ADM and propagates the 1-DOF pitch equation of motion over 15 orbits. Aerodynamic torque at each timestep interpolates $C_M(\theta)$ at the instantaneous pitch angle and scales by orbit-varying dynamic pressure from NRLMSISE-00. Outputs $\theta(t)$, $\dot\theta(t)$. | Yes |
+| **ROADM** — Reduced-Order Attitude Dynamics Model | Reads $C_M(\theta)$ from the ADM and propagates the 1-DOF pitch equation of motion. Aerodynamic torque at each timestep interpolates $C_M(\theta)$ at the instantaneous pitch angle and scales by orbit-varying dynamic pressure from NRLMSISE-00. Outputs $\theta(t)$, $\dot\theta(t)$. | Yes |
 | **SAM** — Statistical Averaging Model | Builds a residence-time PDF $p(\theta)$ from the ROADM time history and uses it as weights in a Riemann sum over $C_D(\theta)$, giving $\bar{C}_D$ and $\bar{\beta}$ over the full $(\phi,\alpha,h)$ space. | Yes |
+
+## Four entry points
+
+Everything is driven from four scripts in the repo root. Helper code lives in
+`lib/`; the original per-task scripts are kept verbatim in `archive/`.
+
+| Script | Purpose |
+|--------|---------|
+| **`setup_databases.m`** | Builds `inertia_tensors.mat` and `ref_geometry.mat`; can also rename raw ADBSat output into the expected layout. `setup_databases` with no argument does the first two. |
+| **`run_sweep.m`** | The ROADM + SAM parameter sweep. Canonical settings from the former `MASTERCODE.m` (June epoch, 98° inclination, `ode45`, one orbit). Writes `drag_sail_attitude_results.mat`. |
+| **`run_analyses.m`** | Dispatcher for every secondary analysis. `run_analyses` with no argument lists them; `run_analyses montecarlo_multiparam` runs one. |
+| **`make_figures.m`** | Dispatcher for every figure-generation script. `make_figures` with no argument lists them; `make_figures beta_cd_suite` runs one. |
+
+`run_analyses` options: `montecarlo_multiparam`, `montecarlo_sensitivity`,
+`montecarlo_barchart`, `accom_pdf`, `accom_transient`, `sensitivity_theta0`,
+`sensitivity_isolated`, `tumbling_multiday`, `tumbling_sphere`,
+`error_convergence`, `decay_map`, `lifetime_kinghele`.
+
+`make_figures` options: `beta_cd_suite`, `sam_sweep`, `sam_extra`, `adm`, `pdf`,
+`sam_vs_uniform`, `cd_feedback`, `angular_velocity`, `density_vs_time`,
+`geometry_patch`.
+
+### Typical run order
+
+```matlab
+setup_databases                       % (only needed to regenerate the .mat inputs)
+run_sweep                             % -> drag_sail_attitude_results.mat
+make_figures beta_cd_suite            % headline Cd_bar / beta figures
+run_analyses montecarlo_multiparam    % -> mc_workspace.mat, mc_results.mat
+run_analyses lifetime_kinghele        % orbital-lifetime figures
+```
+
+Some analyses depend on earlier outputs: `montecarlo_barchart`,
+`sensitivity_theta0` and `sensitivity_isolated` need `mc_workspace.mat` from
+`montecarlo_multiparam`; `decay_map` needs `decay_times.mat`.
+`sensitivity_isolated` uses `parfor` (Parallel Computing Toolbox).
 
 ## The ADM / ADBSat data is not included
 
@@ -26,54 +62,48 @@ adbsat_processed/<alt>km/<phi>deg_CLL_accom_<a>.mat   e.g. adbsat_processed/450k
 ```
 
 To reproduce: obtain ADBSat, run it on the `*.obj` sail geometries in this repo
-for each altitude / accommodation-coefficient combination, and place the results
-in that folder layout. The per-panel `.mat` files must contain `aedb.aero` with
-fields `Cm_BY` and `Cf_wX`.
+for each altitude / accommodation-coefficient combination, then
+`setup_databases rename '<path to ADBSat inou/results>'`. Each per-panel `.mat`
+must contain `aedb.aero` with fields `Cm_BY` and `Cf_wX`.
 
 ## Requirements
 
 - MATLAB (developed on R2023+)
 - **Aerospace Toolbox** — `atmosnrlmsise00`, `eci2lla`
-- ADBSat output (see above) for anything that runs the sweep
+- **Parallel Computing Toolbox** — only for `run_analyses sensitivity_isolated`
+- ADBSat output (see above) for `run_sweep` and most analyses
 
 ## Layout
 
 ```
-*.obj                         Sail geometries (apex half-angle 45°–90°) — ADM input
-drag_sail_inertias.m          Builds inertia_tensors.mat
-get_ref_geometry.m            Reads .obj -> reference area / length; builds ref_geometry.mat
-ref_geometry.mat              Reference geometry per sail (tracked)
-inertia_tensors.mat           Pitch inertia per sail (tracked)
-decay_times.mat               Precomputed decay lifetimes for the decay plots (tracked)
+setup_databases.m   run_sweep.m   run_analyses.m   make_figures.m   <- entry points
 
-MASTERCODE.m                  Full (phi, accom, alt) ROADM+SAM sweep  -> drag_sail_attitude_results.mat
-NEWMASTER.m                   Sweep with Roberts & Harkness (2007) epoch/IC -> attitude_SAM_sweep_*.mat
-mastergit.m                   Same sweep refactored as run_drag_sail_sweep(config)
-accomMASTECODE.m              Accommodation-coefficient focused sweep
-accomtransient.m              Accommodation effect on the pitch transient
+*.obj                    Sail geometries (apex half-angle 45°–90°) — ADM input
+ref_geometry.mat         Reference geometry per sail (regenerate: setup_databases geometry)
+inertia_tensors.mat      Pitch inertia per sail (regenerate: setup_databases inertia)
+decay_times.mat          Precomputed decay lifetimes for run_analyses decay_map
 
-montecarli.m                  Monte Carlo over phi0, dphi0, rho scaling
-MonteCarlo/mc_sensitivity_new.m   Monte Carlo sensitivity (theta0, dphi0, rho_scale)
-barCHARTMC.m                  Monte Carlo bar-chart summary
-error_analysis.m             n_steps convergence, bin-width, density-scaling checks
+lib/
+  project_root.m         Resolves the repo root (replaces the old absolute paths)
+  get_ref_geometry.m     Reads a .obj -> reference area / length
+  analyses/*.m           One self-contained script per run_analyses option
+  figures/*.m            One script per make_figures option
 
-ORBITALDECAY.m               Decay-time colour maps over (accom, phi)
-Publishing/KingHeleOrbital.m King–Hele orbital lifetime vs altitude
-
-plotting.m, attitude_SAM_plots_all_v2.m, newfigs.m, admplot.m, pdfplots.m,
-CDCOMPARE.m, fefdbackplot.m, newplothelin.m, angularvel.m   Figure generation
-patchold.m, patchsingle.m, patchsingleem.m                  Geometry rendering
-spheretest.m, test_tumbling.m, test_tehta0.m, isolated_tests.m   Validation tests
+archive/                 The original 30 scripts, unchanged
+*.png                    Exported figures
 ```
 
-## Known issues
+## Notes
 
-- Several scripts contain hard-coded absolute paths
-  (`/Users/helintaha/Library/CloudStorage/...`). Edit `adbsat_base` /
-  `addpath` lines near the top of each script to point at your local
-  `adbsat_processed/`.
-- `.fig` files and large `.mat` result files are git-ignored; PNG exports of the
-  figures are tracked.
+- The `lib/` scripts are the original bodies with only the hard-coded
+  `/Users/helintaha/...` paths replaced by `project_root()`. Each analysis keeps
+  its own copy of the attitude ODE / density-torque / SAM code, because the
+  differences between them (density scaling, `wrapTo180` binning, `ode45` vs
+  `ode113`, equatorial vs Sun-synchronous) are intentional.
+- Alternative sweep formulations are in `archive/`: `NEWMASTER.m` (January
+  epoch, equatorial, `ode113`, 15 orbits) and `mastergit.m`
+  (`run_drag_sail_sweep(config)` function form).
+- `.fig` files and large `.mat` results are git-ignored; PNG exports are tracked.
 
 ## Reference
 
