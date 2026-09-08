@@ -78,7 +78,7 @@ must contain `aedb.aero` with fields `Cm_BY` and `Cf_wX`.
 ```
 setup_databases.m   run_sweep.m   run_analyses.m   make_figures.m   <- entry points
 
-*.obj                    Sail geometries (apex half-angle 45°–90°) — ADM input
+obj files/               Sail geometries (apex half-angle 45°–90°) — ADM input
 ref_geometry.mat         Reference geometry per sail (regenerate: setup_databases geometry)
 inertia_tensors.mat      Pitch inertia per sail (regenerate: setup_databases inertia)
 decay_times.mat          Precomputed decay lifetimes for run_analyses decay_map

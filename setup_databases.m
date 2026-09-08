@@ -6,8 +6,9 @@ function setup_databases(step, adbsat_results_path)
 %
 %    'inertia'   ->  inertia_tensors.mat   (pitch inertia per apex angle)
 %    'geometry'  ->  ref_geometry.mat      (reference area / length per
-%                                           apex angle, read from the .obj
-%                                           files via get_ref_geometry)
+%                                           apex angle, read from the
+%                                           "obj files/" geometries via
+%                                           get_ref_geometry)
 %    'rename'    ->  copies raw ADBSat run outputs into the
 %                    adbsat_processed/<alt>km/<phi>deg_CLL_accom_<a>.mat
 %                    layout the rest of the code expects. Requires the
@@ -87,7 +88,7 @@ A_ref = zeros(size(phi_deg));
 L_ref = zeros(size(phi_deg));
 
 for k = 1:numel(phi_deg)
-    obj = fullfile(here, sprintf('%ddeg.obj', phi_deg(k)));
+    obj = fullfile(here, 'obj files', sprintf('%ddeg.obj', phi_deg(k)));
     if ~isfile(obj)
         warning('setup_databases:missingObj', 'Missing geometry: %s', obj);
         A_ref(k) = NaN; L_ref(k) = NaN;

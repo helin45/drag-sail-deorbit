@@ -4,7 +4,7 @@ function [A_ref, L_ref] = get_ref_geometry(obj_filepath)
 %   L_ref = sqrt(A_ref)             (characteristic length)
 %
 % Usage:
-%   [A_ref, L_ref] = get_ref_geometry('45deg.obj')
+%   [A_ref, L_ref] = get_ref_geometry(fullfile('obj files','45deg.obj'))
 
     fid = fopen(obj_filepath, 'r');
     if fid == -1
