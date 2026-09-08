@@ -97,8 +97,8 @@ Regenerate figures with `make_figures`.
 
 ## Notes
 
-- The `lib/` scripts are the original bodies with only the hard-coded
-  `/Users/helintaha/...` paths replaced by `project_root()`. Each analysis keeps
+- The `lib/` scripts are the original bodies with only the hard-coded absolute
+  paths replaced by `project_root()`. Each analysis keeps
   its own copy of the attitude ODE / density-torque / SAM code, because the
   differences between them (density scaling, `wrapTo180` binning, `ode45` vs
   `ode113`, equatorial vs Sun-synchronous) are intentional.
