@@ -90,8 +90,11 @@ lib/
   figures/*.m            One script per make_figures option
 
 archive/                 The original 30 scripts, unchanged
-*.png                    Exported figures
 ```
+
+Generated output (`*.png`, `*.fig`) and large result `*.mat` files are
+git-ignored — the repo is code plus the small hand-built inputs only.
+Regenerate figures with `make_figures`.
 
 ## Notes
 
@@ -103,7 +106,8 @@ archive/                 The original 30 scripts, unchanged
 - Alternative sweep formulations are in `archive/`: `NEWMASTER.m` (January
   epoch, equatorial, `ode113`, 15 orbits) and `mastergit.m`
   (`run_drag_sail_sweep(config)` function form).
-- `.fig` files and large `.mat` results are git-ignored; PNG exports are tracked.
+- `.fig` / `.png` figures and large `.mat` results are git-ignored; regenerate
+  them locally.
 
 ## Reference
 

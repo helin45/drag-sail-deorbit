@@ -18,8 +18,14 @@ adbsat_processed/
 !inertia_tensors.mat
 !decay_times.mat
 
-# MATLAB binary figures — bulky and non-portable; PNG exports are tracked instead
+# Generated figures — regenerate with make_figures; keep the repo code-only
 *.fig
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.eps
+*.svg
 
 # MATLAB scratch / autosave
 *.asv
