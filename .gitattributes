@@ -1,0 +1,10 @@
+* text=auto
+
+*.m    text
+*.md   text
+*.obj  text
+LICENSE text
+
+*.png  binary
+*.mat  binary
+*.fig  binary

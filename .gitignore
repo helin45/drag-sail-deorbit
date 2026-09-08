@@ -1,0 +1,35 @@
+# =====================================================================
+#  Aerodynamic Database Model (ADM) — NOT distributed here
+#  These are ADBSat (Sinpetru et al., 2022) outputs; ADBSat belongs to
+#  its authors and is not ours to redistribute. Regenerate locally with
+#  ADBSat + the .obj geometries in this repo.
+# =====================================================================
+adbsat_processed/
+350km/
+450km/
+650km/
+
+# =====================================================================
+#  Large / regenerable result data
+#  Only the small hand-built input .mat files are tracked (see below).
+# =====================================================================
+*.mat
+!ref_geometry.mat
+!inertia_tensors.mat
+!decay_times.mat
+
+# MATLAB binary figures — bulky and non-portable; PNG exports are tracked instead
+*.fig
+
+# MATLAB scratch / autosave
+*.asv
+*.m~
+*.mex*
+slprj/
+octave-workspace
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
